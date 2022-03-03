@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 # ---------------------------- CONSTANTS  ---------------------------------- #
 CHARBLACK = "#203239"
@@ -11,10 +12,16 @@ def save():
     email = email_entry.get()
     pwd = pwd_entry.get()
 
-    with open("myinfo.txt", "a") as data:
-        data.write(f"{website} | {email} | {pwd}\n")
-    website_entry.delete(0, END)
-    pwd_entry.delete(0, END)
+    if len(website) == 0 or len(pwd) == 0:
+        messagebox.showinfo(title="Oops", message="Please don't leave any fields empty")
+    else:
+        is_ok = messagebox.askokcancel(title=website,
+                                       message=f"These are the details entered: \nEmail: {email} \nPassword={pwd} \nIs it ok to save?")
+        if is_ok:
+            with open("myinfo.txt", "a") as data:
+                data.write(f"{website} | {email} | {pwd}\n")
+                website_entry.delete(0, END)
+                pwd_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
